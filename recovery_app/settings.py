@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-$t9u4&(p5prn1*22d_$oic2prnxgc7vwai3xzc7lyw8%y+00fq"
+SECRET_KEY = "django-insecure-ph9g*e6sca-h_m6it4=l41oj1-c(n@1hd^ws@pvm7_6e7!!17%"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["192.168.0.105","127.0.0.1","2e5b-103-182-124-74.ngrok-free.app"]
 
 
 # Application definition
@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "depression_recovery",
+    "rest_framework",
+    "sslserver"
 ]
 
 MIDDLEWARE = [
@@ -54,7 +57,7 @@ ROOT_URLCONF = "recovery_app.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["template"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -114,4 +117,6 @@ STATIC_URL = "static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000/', 'http://127.0.0.1:8000','http://192.168.0.105:8080',"https://2e5b-103-182-124-74.ngrok-free.app"]

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Assistant</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="navbar">It's Your Assistant</div>
+    <div class="chat-container">
+        <div class="chat-header">Chat</div>
+        <div class="chat-messages" id="chat-messages">
+                    <div class="message "><span class="assistant">Hello, how can I help you today?</span></div>
+        </div>
+        <div class="chat-input">
+
+
+            <input type="text" name="textInput" id="message-input" placeholder="Type your message...">
+            <button id="send-button" onclick="addMessage()" type="submit">Send</button>
+        </div>
+    </div>
+    <script>
+        function addMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value;
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.innerHTML = `<span class="user">${message}</span>`;
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.appendChild(messageElement);
+            fetch('/chatBot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+
+                },
+                body: JSON.stringify({ textInput: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                    console.log(data)
+                    const assistantMessage = data.message;
+                    const assistantMessageElement = document.createElement('div');
+                    assistantMessageElement.classList.add('message');
+                    assistantMessageElement.innerHTML = `<span class="assistant">${assistantMessage}</span>`;
+                    chatMessages.appendChild(assistantMessageElement);
+                    messageInput.value = '';
+                });
+        }
+    </script>
+</body>
+</html>
