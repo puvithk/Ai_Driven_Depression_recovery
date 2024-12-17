@@ -269,7 +269,7 @@ def login_view(request):
         print(user)
         if user is not None:
             login(request, user)
-            return redirect('/upload')
+            return redirect('upload')
         else:
             return render(request, 'ChatBot.html', {'error': 'Invalid username or password'})
     else:

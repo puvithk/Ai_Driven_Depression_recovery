@@ -1,0 +1,29 @@
+from datetime import timedelta
+from collections import Counter
+from .models import ChatLog, MoodText
+from django.utils.timezone import now
+
+def consolidate_moods():
+    current_time = now()
+    one_minute_ago = current_time - timedelta(minutes=10)
+    start_of_minute = one_minute_ago.replace(second=0, microsecond=0)
+    end_of_minute = start_of_minute + timedelta(minutes=1)
+
+    # Query ChatLog entries for the last minute
+    recent_logs = ChatLog.objects.filter(timestamp__gte=start_of_minute, timestamp__lt=end_of_minute)
+    print(recent_logs)
+    moods = [log.mood for log in recent_logs]
+    print(f"Moods in the last minute: {moods}")
+
+    if moods:
+        # Get the most common mood
+        most_common_mood = Counter(moods).most_common(1)[0][0]
+        print(f"Most common mood: {most_common_mood}")
+
+        # Save the consolidated mood to MoodText
+        MoodText.objects.update_or_create(
+            timestamp=start_of_minute,
+            defaults={'mood': most_common_mood}
+        )
+    else:
+        print("No moods recorded in the last minute.")

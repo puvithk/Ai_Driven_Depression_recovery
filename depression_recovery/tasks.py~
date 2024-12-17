@@ -1,0 +1,6 @@
+from celery import shared_task
+from .utils import consolidate_moods
+
+@shared_task
+def consolidate_moods_task():
+    consolidate_moods()

@@ -30,7 +30,7 @@
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
             const imageData = canvas.toDataURL('image/jpeg'); // Convert to base64
-            fetch('/', {
+            fetch('api/upload', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

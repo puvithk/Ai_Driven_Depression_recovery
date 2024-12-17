@@ -29,7 +29,7 @@
             messageElement.innerHTML = `<span class="user">${message}</span>`;
             const chatMessages = document.getElementById('chat-messages');
             chatMessages.appendChild(messageElement);
-            fetch('/chatBot', {
+            fetch('api/chatBot', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
