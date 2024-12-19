@@ -1,0 +1,261 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f9fb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+   background: linear-gradient(to right,#a8c0ff, #3f2b96);
+    color: #333;
+  }
+  
+  /* Navbar */
+  .navbar {
+    width: 100%;
+    background-color: #0277bd; /* Professional blue */
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .navbar h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0 15px;
+  }
+  
+  .nav-links li {
+    margin-right: 20px;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
+  
+  .nav-links a:hover {
+    color: #ffb74d; /* Highlight color */
+  }
+  
+  .top-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .notification-btn, .profile-btn {
+    background-color: #0277bd;
+    border: none;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: white;
+    font-size: 24px;
+    transition: transform 0.3s ease;
+    margin-left: 15px;
+  }
+  
+  .notification-btn:hover, .profile-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  .profile-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  
+  /* Main content container */
+  .action-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1000px;
+    width: 100%;
+    margin-top: 30px;
+  }
+  
+  .welcome-message {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+  
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .action-box {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    width: 48%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+  }
+  
+  .action-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .action-box i {
+    font-size: 40px;
+    margin-bottom: 10px;
+    color: #0277bd;
+  }
+  
+  .chatbot {
+    background-color: #81c784;
+  }
+  
+  .query {
+    background-color: #64b5f6;
+  }
+  
+  .consult {
+    background-color: #ffb74d;
+    width: 100%; /* Full width */
+  }
+  
+  button {
+    background-color: #00796b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #004d40;
+  }
+  
+  /* Footer Section */
+  footer {
+    width: 100%;
+    background-color: #0277bd;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .social-media {
+    margin-top: 10px;
+  }
+  
+  .social-icon {
+    font-size: 24px;
+    margin: 0 10px;
+    color: white;
+    transition: color 0.3s ease;
+  }
+  
+  .social-icon:hover {
+    color: #ffb74d;
+  }
+  
+  /* Responsive Design */
+  @media screen and (max-width: 768px) {
+    .action-container {
+      flex-direction: column;
+    }
+  
+    .top-row {
+      flex-direction: column;
+    }
+  
+    .action-box {
+      width: 100%;
+    }
+  
+    .navbar h1 {
+      font-size: 20px;
+    }
+  
+    .nav-links {
+      display: none; /* Hides menu for mobile */
+    }
+  
+    .top-buttons {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+  
+    .notification-btn, .profile-btn {
+      margin: 5px 0;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .navbar .logo-container, .navbar h1 {
+      margin-bottom: 10px;
+    }
+  
+    .nav-links {
+      display: none;
+    }
+  
+    .top-buttons {
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+  
+    .action-box {
+      width: 100%;
+    }
+  }
+  

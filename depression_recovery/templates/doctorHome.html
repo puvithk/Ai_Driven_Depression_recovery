@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Dashboard</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'CSS/doctor.css' %}">
+
+  <!-- Font Awesome Icons for UI -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo-container">
+      <h1>HealthCare Portal</h1>
+    </div>
+    <div class="welcome-message">
+      <p>Welcome, Doctor</p>
+    </div>
+    <div class="top-buttons">
+      <button class="notification-btn">
+        <span class="bell-icon">&#128276;</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content Section -->
+  <main>
+    <div class="patient-container">
+      <h2>Patient Details</h2>
+      <table class="patient-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Patient ID</th>
+            <th>Date</th>
+            <th>Info</th>
+            <th>Patient Details</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for patient in patients %}
+
+          <tr>
+            <td>{{patient.user.username}}</td>
+            <td>{{patient.patientId}}</td>
+            <td>{{patient.JoinedTime}}</td>
+            <td>{{patient.description}}</td>
+            <td><a href="#" class="arrow-link"><i class="fas fa-arrow-right"></i></a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer>
+    <p>&copy; 2024 HealthCare Portal. All Rights Reserved.</p>
+    <div class="social-media">
+      <a href="https://www.facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.twitter.com" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.instagram.com" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

@@ -5,23 +5,25 @@ from django.contrib.auth.models import User
 class DoctorData(models.Model):
     doctorId = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    patients = models.ManyToManyField('PatientData', blank=True, related_name='assigned_doctors')
+    patients =models.ForeignKey(DoctorData, on_delete=models.CASCADE, related_name='assigned_doctors', blank=True,null=True)
 
     def __str__(self):
         return f"Doctor: {self.user.username}"
 
 # Define models for mood analysis and patient-doctor data management
 class PatientData(models.Model):
-    patientId = models.AutoField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(DoctorData, on_delete=models.CASCADE, related_name='patients_under_care', blank=True)
 
+    patientId = models.AutoField(primary_key=True)
+    JoinedTime = models.DateTimeField(null= True , blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(DoctorData, on_delete=models.CASCADE, related_name='patients_under_care', blank=True,null=True)
+    description = models.TextField(null=True, blank=True)  # Add a d   escription field for patient group
     def __str__(self):
         return f"Patient: {self.user.username}"
 
 
 class MoodVideo(models.Model):
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(null= True , blank=True)
     mood = models.CharField(max_length=50)
     patient = models.ForeignKey(PatientData, on_delete=models.CASCADE, related_name="mood_video", null=True, blank=True)
     def __str__(self):
@@ -33,7 +35,7 @@ class WeablesData(models.Model):
     respiration_rate = models.FloatField()
     body_temperature = models.FloatField()
     blood_oxygen = models.FloatField()
-    eye_movement = models.FloatField()
+    heart_rate = models.FloatField()
     sleeping_hours = models.FloatField()
     stress_level = models.FloatField()
     mood_data = models.CharField(max_length=50)

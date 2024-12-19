@@ -5,28 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e1c1d76-75b2-4d02-9831-6e03103a16b7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/sentimental.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/management/commands/consolidate_moods.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/migrations/0002_alter_chatlog_timestamp.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/serializer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/tasks.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/templates/Home.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/templates/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/templates/doctor.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/templates/doctor_signup.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/templates/patient_signup.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/recovery_app/celery.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/haarcascade_frontalface_default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/model/fingerprint.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/model/saved_model.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/model/variables/variables.data-00000-of-00001" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/model/variables/variables.index" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/my_5_class701Model.h5" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/migrations/0007_patientdata_description.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/migrations/0008_remove_doctordata_patients.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/static/CSS/doctor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/static/CSS/patient.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/static/CSS/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/static/Photos/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/static/Photos/logo1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/static/Photos/profile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/templates/doctorHome.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/templates/pateintHome.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/depression_recovery/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/depression_recovery/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/Mlmodels/sentimental.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/AllAiModels.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/ChatBot.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/serializer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/static/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/ChatBot.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/ChatBot.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/doctor.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/doctor.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/upload.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recovery_app/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/recovery_app/settings.py" afterDir="false" />
@@ -71,20 +74,24 @@
     &quot;com.codeium.enabled&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/Ai_Driven_Depression_recovery/depression_recovery/Mlmodels&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\Ai_Driven_Depression_recovery\recovery_app" />
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\Ai_Driven_Depression_recovery\depression_recovery\Mlmodels" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\Ai_Driven_Depression_recovery\depression_recovery\Mlmodels" />
+      <recent name="F:\Ai_Driven_Depression_recovery\recovery_app" />
       <recent name="F:\Ai_Driven_Depression_recovery\depression_recovery\Mlmodels\modelsMl" />
       <recent name="F:\Ai_Driven_Depression_recovery\depression_recovery" />
       <recent name="F:\Ai_Driven_Depression_recovery\depression_recovery\static" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.sentimental (1)">
-    <configuration name="sentimental (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.AllAiModels (1)">
+    <configuration name="AllAiModels (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Ai_Driven_Depression_recovery" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -96,7 +103,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/depression_recovery/Mlmodels/sentimental.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/depression_recovery/Mlmodels/AllAiModels.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -105,7 +112,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="sentimental" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="AllAiModels" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Ai_Driven_Depression_recovery" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -117,7 +124,28 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="F:\Ai_Driven_Depression_recovery\depression_recovery\Mlmodels\sentimental.py" />
+      <option name="SCRIPT_NAME" value="F:\Ai_Driven_Depression_recovery\depression_recovery\Mlmodels\AllAiModels.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="AllAiModels" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Ai_Driven_Depression_recovery" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/depression_recovery/Mlmodels" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="F:\Ai_Driven_Depression_recovery\depression_recovery\Mlmodels\AllAiModels.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -128,8 +156,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.sentimental (1)" />
-        <item itemvalue="Python.sentimental" />
+        <item itemvalue="Python.AllAiModels (1)" />
+        <item itemvalue="Python.AllAiModels" />
+        <item itemvalue="Python.AllAiModels" />
       </list>
     </recent_temporary>
   </component>
@@ -151,24 +180,23 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/depression_recovery/Mlmodels/sentimental.py</url>
-          <line>8</line>
+          <url>file://$PROJECT_DIR$/depression_recovery/Mlmodels/AllAiModels.py</url>
+          <line>12</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/depression_recovery/urls.py</url>
-          <line>16</line>
+          <line>17</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/depression_recovery/views.py</url>
-          <line>201</line>
-          <option name="timeStamp" value="4" />
+          <line>321</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/depression_recovery/views.py</url>
-          <line>239</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/depression_recovery/serializer.py</url>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

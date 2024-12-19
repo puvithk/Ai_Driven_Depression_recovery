@@ -2,7 +2,9 @@ import base64
 import datetime
 import json
 import uuid
-
+import pytz
+import os
+import pandas as pd
 import django.contrib.auth
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -16,19 +18,23 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.schema.runnable import RunnableSequence
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.utils.timezone import now
+from django.utils.timezone import now, localtime
 import depression_recovery.serializer
-from depression_recovery.Mlmodels.sentimental import Sentimental
+from depression_recovery.Mlmodels.AllAiModels import Sentimental, VideoModel
 from .models import *
 from datetime import date
 from django.shortcuts import render, redirect
 from django.contrib.auth import login ,authenticate
 from .forms import DoctorSignupForm, PatientSignupForm
-from .models import DoctorData, PatientData
+from .models import DoctorData, PatientData , ChatLog , WeablesData
+from datetime import datetime, timedelta
+from django.conf import settings
+from pathlib import Path
+import csv
+
 from django.db.models.expressions import RawSQL
 import time
 moodByText = [ 'neutral' ]
-chat_log = ChatLog()
 
 
 class AIModel():
@@ -40,10 +46,13 @@ class AIModel():
 
         )
         self.sentimental = Sentimental()
+        self.videoModel = VideoModel()
         prompt_template = """
         You are a virtual psychiatrist helping users manage their mental health.
         Act as a human dont provide other numbers in text (Dont provide the phone number of anyone )
         You should be able to talk and convence users 
+        And Your country is India
+        And emergency contact number is 112
         Below is the conversation history and the current input:
         Conversation history:{conversation_history}
         User's input: {user_input}
@@ -83,8 +92,9 @@ class AIModel():
 
 global_ai_model = AIModel()
 
-
+#Upload Images
 def upload_image(request):
+
     if request.method == 'POST':
         try:
             # Extract the base64 image data
@@ -97,8 +107,15 @@ def upload_image(request):
                 image_np = np.array(image)
                 print(image.mode)
                 image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
-                mood = process_image(image_np)
-
+                mood = global_ai_model.videoModel.predict_emotion(image_np)
+                print(mood)
+                if mood is None:
+                    mood = "neutral"
+                try:
+                    MoodVideo.objects.create(mood=mood, patient=PatientData.objects.get(user=request.user),timestamp = now())
+                except Exception as e:
+                    print(e)
+                    return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
                 return JsonResponse({'status': 'success', 'mood': mood})
             else:
                 return JsonResponse({'status': 'error', 'message': 'Invalid image format'}, status=400)
@@ -128,11 +145,11 @@ def chatBot(request):
     # conversation_history = request.session[ 'conversation_history' ]
     # messaging_history = request.session[ 'messaging_history' ]
     # aimodel = global_ai_model
-    request.session.flush()  # Clears session data
-    request.session[ 'session_id' ] = str(uuid.uuid4())  # Generate a new session ID
+    # request.session.flush()  # Clears session data
+    # request.session[ 'session_id' ] = str(uuid.uuid4())  # Generate a new session ID
     request.session[ 'conversation_history' ] = ""
     request.session[ 'messaging_history' ] = [ {
-        "role": "assistant", "content": "Hello, how can I help you today?"
+       "role": "assistant", "content": "Hello, how can I help you today?"
     } ]
     # print("hello")
     # for i ,j in request.session.items():
@@ -150,33 +167,75 @@ def chatBot(request):
     return render(request, "ChatBot.html", )
 
 
+@csrf_exempt
 @api_view([ 'POST' ])
 def chat_bot(request):
-    data = json.loads(request.body)
-    conversation_history = request.session[ 'conversation_history' ]
-    messaging_history = request.session[ 'messaging_history' ]
-    aimodel = global_ai_model
-    message = aimodel.messaging_history
     if not request.user.is_authenticated:
         return Response({"message": "Please login to continue"})
-    if request.method == "POST":
-        print(request.session[ 'conversation_history' ])
-        print("Request ", data.get("textInput"))
-        global_ai_model.conversation_history = conversation_history
-        user_input = data.get("textInput")
-        response = global_ai_model.chat(user_input, moodByText[ -1 ])
-        moodByText.append(global_ai_model.sentimental.predict_sentiment(user_input))
-        print(moodByText)
-        request.session[ 'conversation_history' ] = global_ai_model.conversation_history
-        request.session[ 'messaging_history' ] = global_ai_model.messaging_history
-        message = aimodel.messaging_history
 
-        chat_log.timestamp = now()
-        chat_log.user_input = user_input
-        chat_log.bot_response = response
-        chat_log.mood = moodByText[ -1 ]
+    if request.method == "POST":
+        data = request.data
+        user_input = data.get("textInput")
+        print("Request received: ", user_input)
+
+        # Check session variables
+        conversation_history = request.session.get('conversation_history', [ ])
+        messaging_history = request.session.get('messaging_history', [ ])
+
+        aimodel = global_ai_model
+        aimodel.conversation_history = conversation_history
+
+        # Generate AI response and mood analysis
+        response = aimodel.chat(user_input, moodByText[ -1 ])
+        sentiment = aimodel.sentimental.predict_sentiment(user_input)
+        moodByText.append(sentiment)
+        print("Mood by text: ", moodByText)
+
+        # Update session variables
+        request.session[ 'conversation_history' ] = aimodel.conversation_history
+        request.session[ 'messaging_history' ] = aimodel.messaging_history
+
+        # Save ChatLog entry
+        user = PatientData.objects.get(user=request.user)
+        chat_log = ChatLog(
+            timestamp=now(),
+            user_input=user_input,
+            bot_response=response,
+            mood=sentiment,
+            patient=user
+        )
         chat_log.save()
+
+        # Determine mood index for WeablesData
+        mood_index = 1 if sentiment == "negative" else 10 if sentiment == "positive" else 5
+
+        # Process CSV file and save WeablesData
+        csv_file_path = os.path.join(settings.BASE_DIR,'depression_recovery', 'static', 'wearables.csv')
+        try:
+            with open(csv_file_path, 'r') as file:
+                csv_reader = csv.DictReader(file)
+                for row in csv_reader:
+                    # Save each row as a WeablesData entry
+                    weables = WeablesData(
+                        timestamp=now(),
+                        respiration_rate=float(row['rr']),
+                        body_temperature=float(row['t']),
+                        blood_oxygen=float(row[ 'bo']),
+                        heart_rate=float(row[ 'hr' ]),
+                        sleeping_hours=float(row[ 'hr' ]),
+                        stress_level=float(row[ 'sl' ]),
+                        mood_data=str(mood_index),
+                        patient=user
+                    )
+                    weables.save()
+        except FileNotFoundError:
+            print(f"CSV file not found at {csv_file_path}")
+        except Exception as e:
+            print(f"Error processing CSV: {e}")
+
+        # Return AI response
         return Response({"message": response})
+
     return Response({"message": "Hello, how can I help you today?"})
 
 
@@ -185,32 +244,55 @@ def getAllChats(request):
     return JsonResponse(seralizer.data, safe=False)
 
 
-def home(request):
-    return render(request, "Home.html")
+def Loginhome(request,user):
+    if request.user.is_authenticated:
+        user = user.lower()
+        if user == "doctor":
+            try:
+                doctor_data = DoctorData.objects.get(user=request.user)
+                patients = PatientData.objects.filter(doctor=doctor_data)
+            except DoctorData.DoesNotExist:
+                patients = []
+            return render(request, "doctorHome.html"  , {'patients': patients})
+        elif user == "patient":
+            return render(request, "pateintHome.html",{'user': request.user})
+    return redirect('/login')
 
 
 @api_view([ 'GET' ])
 @csrf_exempt
-def PatientData1(request):
+def GetPatientData(request):
     filter_date = now().date()
-    # Filter messages by date
     print(filter_date)
-    filtered_messages = ChatLog.objects.filter(timestamp__date=date.today())
-    #filtered_messages = ChatLog.objects.all()
-    filtered_messages = ChatLog.objects.raw('SELECT * FROM ChatLog'+
-                                            f' WHERE DATE(timestamp) = '+
-                                            f'CURRENT_DATE')
 
-    seralizer = depression_recovery.serializer.ChatLogSerializer(filtered_messages, many=True)
-    data = seralizer.data
+    # Filter messages by today's date
+    filtered_messages = ChatLog.objects.filter(timestamp__date=filter_date)
+    serializer = depression_recovery.serializer.ChatLogSerializer(filtered_messages, many=True)
+    data = serializer.data
     print(data)
-    dataTime = [[float(datetime.datetime.strptime(x['timestamp'][11:-1], '%H:%M:%S.%f').strftime('%H%M%S'))/10000 , 1 if x['mood']=="positive" else 0.5 if x['mood']=="negative" else 0] for x in data]
+
+    # Convert timestamps to local time and process data
+    dataTime = [ ]
+    for x in data:
+        try:
+            # Parse the timestamp including timezone offset
+            timestamp = datetime.fromisoformat(x[ 'timestamp' ])
+            local_timestamp = localtime(timestamp)  # Convert to local time
+
+            # Extract time components and mood
+            time_in_seconds = float(local_timestamp.strftime('%H%M%S')) / 10000
+            mood_score = 1 if x[ 'mood' ] == "positive" else 0.5 if x[ 'mood' ] == "negative" else 0
+
+            dataTime.append([ time_in_seconds, mood_score ])
+        except ValueError as e:
+            print(f"Error parsing timestamp: {x[ 'timestamp' ]}. Error: {e}")
+            continue
 
     print(json.dumps(dataTime))
     return Response(dataTime)
 
 def doctor(request):
-    return JsonResponse({"message": ChatLog.objects.raw('SELECT * FROM TAB')})
+
     return render(request, "doctor.html")
 
 
@@ -269,8 +351,15 @@ def login_view(request):
         print(user)
         if user is not None:
             login(request, user)
-            return redirect('/upload')
+            if DoctorData.objects.filter(user=user).exists():
+                return redirect('/home/Doctor')
+            if PatientData.objects.filter(user=user).exists():
+                return redirect('/home/Patient')
         else:
-            return render(request, 'ChatBot.html', {'error': 'Invalid username or password'})
+            return render(request, 'login.html')
     else:
         return render(request, 'login.html')
+
+
+def home(request):
+    return render(request,"Mainhome.html")

@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token }}">
-     <script src="https://cdn.tailwindcss.com"></script>
+     {% block loading %}
+     {% endblock %}
     <title>Mood Monitoring</title>
 </head>
 <body>
+{% block content %}
+
+{% endblock %}
     <video id="video" style="display:none; " autoplay></video>
     <canvas id="canvas" style="display:none;"></canvas>
 
@@ -30,7 +34,7 @@
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
             const imageData = canvas.toDataURL('image/jpeg'); // Convert to base64
-            fetch('api/upload', {
+            fetch('/api/upload', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,7 +45,7 @@
             .then(response => response.json())
             .then(data => console.log('Server response:', data))
             .catch(err => console.error('Error sending image:', err));
-        }, 6000); // 1 minute interval
+        }, 3000); // 30 sec  interval
 
         function getCsrfToken() {
     const token = document.querySelector('meta[name="csrf-token"]');
@@ -49,5 +53,6 @@
     return token ? token.content : '';
 }
     </script>
+
 </body>
 </html>

@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>Your Assistant</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
 </head>
 <body>
     <div class="navbar">It's Your Assistant</div>
@@ -15,7 +17,7 @@
         </div>
         <div class="chat-input">
 
-
+            {{ crsf_token }}
             <input type="text" name="textInput" id="message-input" placeholder="Type your message...">
             <button id="send-button" onclick="addMessage()" type="submit">Send</button>
         </div>
@@ -33,7 +35,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-
+                    'X-CSRFToken': getCsrfToken()
                 },
                 body: JSON.stringify({ textInput: message })
             })
@@ -47,6 +49,12 @@
                     chatMessages.appendChild(assistantMessageElement);
                     messageInput.value = '';
                 });
+
+        }
+        function getCsrfToken(){
+            const token = document.querySelector('meta[name="csrf-token"]');
+            console.log(token)
+            return token ? token.content : '';
         }
     </script>
 </body>

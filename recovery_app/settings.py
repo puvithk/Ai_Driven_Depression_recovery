@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -118,10 +118,11 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-
+SESSION_COOKIE_AGE = 3600
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8000/', 'http://127.0.0.1:8000','http://192.168.0.105:8080',"https://2e5b-103-182-124-74.ngrok-free.app"]
 CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Using Redis as the broker

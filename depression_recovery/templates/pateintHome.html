@@ -1,0 +1,83 @@
+{% extends 'upload.html' %}
+{% load static %}
+
+  {% block loading %}
+    <link rel="stylesheet" href="{% static 'CSS/patient.css' %}">
+  {% endblock %}
+
+
+{% block content %}
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo-container">
+      <div class="logo">
+        {% load static %}
+        <img src="{% static 'Photos/logo.png' %}" alt="Logo" class="logo-img">
+        <h1>Welcome, {{user.username}}!</h1>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#Home">Home</a></li>
+      <li><a href="#About us">About us</a></li>
+      <li><a href="#Contact">Contact</a></li>
+    </ul>
+    <div class="top-buttons">
+      <button class="notification-btn">
+        <span class="bell-icon">&#128276;</span>
+      </button>
+      <button class="profile-btn">
+         {% load static %}
+        <img src="{% static 'Photos/profile.png' %}" alt="Profile" class="profile-img">
+      </button>
+    </div>
+  </nav>
+
+  <!-- Welcome Message -->
+  <header>
+    <div class="welcome-message">
+      <h2>Welcome, {{user.username}}!</h2>
+    </div>
+  </header>
+
+  <!-- Main Content Section -->
+  <main>
+    <div class="action-container">
+      <!-- Consultant Section -->
+      <div id="consult" class="action-box consult">
+        <i class="fas fa-user-md"></i>
+        <h2>Doctor Consultation</h2>
+        <p>Book a consultation with a doctor</p>
+        <button>Consult Now</button>
+      </div>
+
+      <!-- Top Row with two action boxes -->
+      <div class="top-row">
+        <div id="chatbot" class="action-box chatbot">
+          <i class="fas fa-comment-dots"></i>
+          <h2>Chatbot</h2>
+          <p>Talk to the virtual assistant</p>
+          <button>Start Chat</button>
+        </div>
+
+        <div id="query" class="action-box query">
+          <i class="fas fa-stethoscope"></i>
+          <h2>Doctor Query</h2>
+          <p>Ask a question to a doctor</p>
+          <button>Ask Now</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer>
+    <p>&copy; 2024 HealthCare Portal. All Rights Reserved.</p>
+    <div class="social-media">
+      <a href="https://www.facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.twitter.com" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.instagram.com" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+{% endblock %}
