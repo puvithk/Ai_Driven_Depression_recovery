@@ -1,19 +1,32 @@
-{% extends 'upload.html' %}
-{% load static %}
+{% extends "upload.html" %}
 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Dashboard</title>
   {% block loading %}
-    <link rel="stylesheet" href="{% static 'CSS/patient.css' %}">
-  {% endblock %}
+
+   {% load static %}
+  <link rel="stylesheet" href="{% static 'CSS/patient.css' %}">
+  <!-- Font Awesome Icons for UI -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    {% load static %}
+  <script src="{% static 'JS/contact_d.js' %}"></script>
+   {% endblock loading %}
+</head>
+<body>
 
 
 {% block content %}
+
   <!-- Navigation Bar -->
   <nav class="navbar">
     <div class="logo-container">
       <div class="logo">
         {% load static %}
         <img src="{% static 'Photos/logo.png' %}" alt="Logo" class="logo-img">
-        <h1>Welcome, {{user.username}}!</h1>
+        <h1>HealthCare Portal</h1>
       </div>
     </div>
     <ul class="nav-links">
@@ -22,20 +35,39 @@
       <li><a href="#Contact">Contact</a></li>
     </ul>
     <div class="top-buttons">
-      <button class="notification-btn">
-        <span class="bell-icon">&#128276;</span>
-      </button>
-      <button class="profile-btn">
-         {% load static %}
-        <img src="{% static 'Photos/profile.png' %}" alt="Profile" class="profile-img">
-      </button>
+      <div class="notification-container">
+        <button class="notification-btn">
+          <span class="bell-icon">&#128276;</span>
+        </button>
+        <div class="dropdown" id="dropdown">
+          <tr>
+            <p>No new notifications</p>
+            <p>No new notifications</p>
+          </tr>
+        </div>
+      </div>
+      
+      <div class="notification-container">
+        <form action="{% url 'logout' %}" method="POST">
+    {% csrf_token %}
+    <button class="notification-btn" type="submit">
+        Logout
+    </button>
+</form>
+
+
+      </div>
+
+
+    
     </div>
   </nav>
 
   <!-- Welcome Message -->
   <header>
     <div class="welcome-message">
-      <h2>Welcome, {{user.username}}!</h2>
+      <br>
+      <h2>Welcome, User!</h2>
     </div>
   </header>
 
@@ -47,8 +79,37 @@
         <i class="fas fa-user-md"></i>
         <h2>Doctor Consultation</h2>
         <p>Book a consultation with a doctor</p>
-        <button>Consult Now</button>
+        <button onclick="openPopup()">Consult Now</button>
       </div>
+
+      <!-- Popup Container -->
+      <div class="popup-container" id="popupContainer">
+        <div class="popup-box">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <h3>Book Appointment</h3>
+            
+            <form>
+                <label for="name">Enter your name</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+                
+                <label for="phone">Enter your mobile number</label>
+                <input type="tel" id="phone" placeholder="+91 Enter your mobile number" required>
+                
+
+      
+                <label for="appointment-date">Select Appointment Date</label>
+                <input type="date" id="appointment-date" required>
+      
+                <label for="appointment-time">Select Appointment Time</label>
+                <input type="time" id="appointment-time" required>
+                
+                <button type="submit">Book Appointment</button>
+            </form>
+        </div>
+      </div>
+    
+    
+      
 
       <!-- Top Row with two action boxes -->
       <div class="top-row">
@@ -56,18 +117,35 @@
           <i class="fas fa-comment-dots"></i>
           <h2>Chatbot</h2>
           <p>Talk to the virtual assistant</p>
-          <button>Start Chat</button>
+          <button onclick="window.location.href='/chatBot';">Start Chat</button>
         </div>
 
+        
         <div id="query" class="action-box query">
           <i class="fas fa-stethoscope"></i>
           <h2>Doctor Query</h2>
           <p>Ask a question to a doctor</p>
-          <button>Ask Now</button>
+          <button onclick="openPop()">Ask Now</button>
+        </div>  
+        <!-- Popup Container -->
+      <div class="popup-query" id="popupquery" style="display: none;">
+        <div class="popup-box">
+            <span class="close-btn" onclick="closePop()">&times;</span>
+            <h1>Ask a Doctor Online</h1>
+            
+            <form>
+              <label for="query">Enter Your Health Query </label>
+              <textarea id="query" placeholder="Describe your health query here" required></textarea>          
+                
+                <button type="submit">Submit</button>
+            </form>
         </div>
-      </div>
+    </div>
+
+      </div>  
     </div>
   </main>
+ 
 
   <!-- Footer Section -->
   <footer>
@@ -80,4 +158,6 @@
   </footer>
 
   <script src="script.js"></script>
-{% endblock %}
+{% endblock content %}
+</body>
+</html>

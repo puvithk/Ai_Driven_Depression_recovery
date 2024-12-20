@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accelerated Mental Health Support</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
@@ -135,7 +136,7 @@
             border-radius: 5px;
             cursor: pointer;
             border: 2px solid rgb(116, 175, 227);
-            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); 
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
         }
         .overlay {
             position: fixed;
@@ -178,7 +179,7 @@
         <div class="header">
             <h1>Accelerated Mental Health Support</h1>
             <p>Empowering youth recovery through AI-enhanced diagnostic tools designed to accelerate and personalize the path to mental wellness.</p>
-            <a href="#" class="get-started" onclick="showPopup()">Get Started</a>
+            <a href="{% url 'login' %}" class="get-started" onclick="showPopup()">Get Started</a>
         </div>
         <div class="overlay" id="overlay"></div>
         <div class="login-signup-popup" id="popup">
@@ -187,7 +188,7 @@
                 <button class="toggle-option active" id="userTab" onclick="showTab('user')">User</button>
                 <button class="toggle-option" id="doctorTab" onclick="showTab('doctor')">Doctor</button>
             </div>
-            
+
             <div id="user" class="popup-content">
                 <h3>User Login</h3>
                 <div class="form-group">
@@ -201,10 +202,10 @@
                 <div class="social-login">
                     <button><i class="bi bi-google"></i> Login with Google</button>
                 </div>
-                <button class="btn" onclick="handleLogin()">Login</button>
-                
-                <p>If you don't have an account, click <span onclick="showTab('signup')" style="cursor: pointer; color: #2575fc; text-decoration: underline;">Sign Up</span>.</p>
+                <button class="btn" onclick="handleLogin('user')">Login</button>
+                <p>If you don't have an account, click <span onclick="redirectToSignUp('userSignup')" style="cursor: pointer; color: #2575fc; text-decoration: underline;">Sign Up</span>.</p>
             </div>
+
             <div id="doctor" class="popup-content">
                 <h3>Doctor Login</h3>
                 <div class="form-group">
@@ -216,20 +217,58 @@
                     <input type="text" id="doctorID" placeholder="Enter your ID">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password">
+                    <label for="doctorPassword">Password</label>
+                    <input type="password" id="doctorPassword" placeholder="Enter your password">
                 </div>
-                <button class="btn" onclick="handleDoctorLogin()">Login</button>
+                <button class="btn" onclick="handleLogin('doctor')">Login</button>
+                <p>If you don't have an account, click <span onclick="redirectToSignUp('doctorSignup')" style="cursor: pointer; color: #2575fc; text-decoration: underline;">Sign Up</span>.</p>
+            </div>
+
+            <div id="userSignup" class="popup-content" style="display: none;">
+                <h3>User Sign Up</h3>
+                <div class="form-group">
+                    <label for="signupUserName">Name</label>
+                    <input type="text" id="signupUserName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="signupUserDoctorID">Doctor ID</label>
+                    <input type="text" id="signupUserDoctorID" placeholder="Enter your ID">
+                </div>
+                <div class="form-group">
+                    <label for="signupUserEmail">Email</label>
+                    <input type="email" id="signupUserEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="signupUserPassword">Password</label>
+                    <input type="password" id="signupUserPassword" placeholder="Enter your password">
+                </div>
+                <button class="btn" onclick="handleSignUp('user')">Sign Up</button>
+                <p>Already have an account? Click <span onclick="showTab('user')" style="cursor: pointer; color: #2575fc; text-decoration: underline;">Login</span>.</p>
+            </div>
+
+            <div id="doctorSignup" class="popup-content" style="display: none;">
+                <h3>Doctor Sign Up</h3>
+                <div class="form-group">
+                    <label for="signupDoctorName">Name</label>
+                    <input type="text" id="signupDoctorName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="signupDoctorEmail">Email</label>
+                    <input type="email" id="signupDoctorEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="signupDoctorPassword">Password</label>
+                    <input type="password" id="signupDoctorPassword" placeholder="Enter your password">
+                </div>
+                <button class="btn" onclick="handleSignUp('doctor')">Sign Up</button>
+                <p>Already have an account? Click <span onclick="showTab('doctor')" style="cursor: pointer; color: #2575fc; text-decoration: underline;">Login</span>.</p>
             </div>
         </div>
     </div>
 
     <script>
-        
         function showPopup() {
-            document.getElementById('popup').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-            showTab('user');
+            window.location.herf = "/login";
         }
 
         function closePopup() {
@@ -238,28 +277,165 @@
         }
 
         function showTab(tabName) {
-            // Show the respective content
             const tabs = document.querySelectorAll('.popup-content');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                tab.style.display = 'none';
+            });
+            const activeTab = document.getElementById(tabName);
+            activeTab.classList.add('active');
+            activeTab.style.display = 'block';
 
-            // Toggle active class for buttons
             const buttons = document.querySelectorAll('.toggle-option');
             buttons.forEach(button => button.classList.remove('active'));
-            document.getElementById(tabName + 'Tab').classList.add('active');
+            if (document.getElementById(tabName + 'Tab')) {
+                document.getElementById(tabName + 'Tab').classList.add('active');
+            }
+        }
+
+        function handleLogin(type) {
+            if (type === 'user') {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                if (!username || !password) {
+                    alert('Please enter username and password.');
+                    return;
+                }
+                console.log(username)
+                fetch('login/',{
+                    method :'POST',
+                    headers :{
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({
+                    'password' : password ,
+                    'username' : username
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        alert("Doctor sign-up successful! Redirecting to login page.")
+                        window.location.href = "/home/patient";
+                        showTab('doctor');
+                        } else {
+                            alert("Failed to sign up as a doctor.");
+                            }
+                })
+                ;
+
+            } else if (type === 'doctor') {
+                const doctorName = document.getElementById('doctorName').value;
+                const doctorID = document.getElementById('doctorID').value;
+                const password = document.getElementById('doctorPassword').value;
+                console.log(doctorName)
+                if (!doctorName || !doctorID || !password) {
+                    alert('Please enter doctor name, ID, and password.');
+                    return;
+                }
+                fetch('login/',{
+                    method :'POST',
+                    headers :{
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body:
+                    JSON.stringify({
+                    password : password ,
+                    username : doctorName
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        alert("Doctor sign-up successful! Redirecting to login page.")
+                        window.location.href = "/home/doctor";
+                        showTab('doctor');
+                        } else {
+                            alert("Failed to sign up as a doctor.");
+                            }
+                })
+                ;
+
+            }
+        }
+
+        function handleSignUp(type) {
+            if (type === 'user') {
+                const name = document.getElementById('signupUserName').value;
+                const email = document.getElementById('signupUserEmail').value;
+                const password = document.getElementById('signupUserPassword').value;
+                const Doctor = document.getElementById('signupUserDoctorID').value;
+                if (!name || !email || !password) {
+                    alert('Please fill in all the fields to sign up as a user.');
+                    return;
+                }
+                fetch('signup/patient/',{
+                    method :'POST',
+                    headers :{
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({
+                        "username" : name + Doctor,
+                        "name" : name,
+                    "password" : password ,
+                    "email" : email ,
+                    "DoctorId" : Doctor
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        alert("Doctor sign-up successful! Redirecting to login page.")
+                        window.location.href = "/home/patient";
+                        showTab('user');
+                        } else {
+                            alert("Failed to sign up as a doctor.");
+                            }
+                })
+
+
+            } else if (type === 'doctor') {
+                const name = document.getElementById('signupDoctorName').value;
+                const email = document.getElementById('signupDoctorEmail').value;
+                const password = document.getElementById('signupDoctorPassword').value;
+
+                if (!name || !email || !password) {
+                    alert('Please fill in all the fields to sign up as a doctor.');
+                    return;
+                }
+                fetch('signup/doctor/',{
+                    method :'POST',
+                    headers :{
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({ "username" : name,
+                    "password" : password ,
+                    "email" : email
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        alert("Doctor sign-up successful! Redirecting to login page.")
+                        window.location.href = "/home/doctor";
+                        showTab('doctor');
+                        } else {
+                            alert("Failed to sign up as a doctor.");
+                            }
+                })
+                ;
+
+            }
+        }
+
+        function redirectToSignUp(signupTab) {
+
+            showTab(signupTab);
         }
 
 
-        function handleLogin() {
-            alert("User login successful!");
-            window.location.href = "user.html";
-        }
-
-        function handleDoctorLogin() {
-            alert("Doctor login successful!");
-            window.location.href = "doctor.html";
-        }
-        
-    </script>
+        function getCsrfToken() {
+        const token = document.querySelector('meta[name="csrf-token"]');
+        console.log(token)
+        return token ? token.content : '';
+}
+        </script>
 </body>
 </html>

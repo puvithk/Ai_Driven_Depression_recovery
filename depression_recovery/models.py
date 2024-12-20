@@ -37,7 +37,7 @@ class WeablesData(models.Model):
     blood_oxygen = models.FloatField()
     heart_rate = models.FloatField()
     sleeping_hours = models.FloatField()
-    stress_level = models.FloatField()
+    stress_level = models.FloatField(null=True, blank=True)
     mood_data = models.CharField(max_length=50)
     patient = models.ForeignKey(PatientData, on_delete=models.CASCADE, related_name="weables_data", null=True, blank=True)
 
@@ -55,5 +55,10 @@ class ChatLog(models.Model):
         return f"ChatLog at {self.timestamp} - Mood: {self.mood}"
 
 
-
+class BecksIndex(models.Model):
+    timestamp = models.DateTimeField()
+    score = models.IntegerField()
+    patient = models.ForeignKey(PatientData, on_delete=models.CASCADE, related_name="becks_index", null=True, blank=True)
+    def __str__(self):
+        return f"BecksIndex at {self.timestamp} - Score: {self.score}"
 

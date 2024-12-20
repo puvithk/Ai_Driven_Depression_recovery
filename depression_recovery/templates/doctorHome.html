@@ -11,19 +11,30 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+  <style>
 
+    body{
+     background: linear-gradient(to right,#a8c0ff, #3f2b96)
+    }
+  </style>
   <!-- Navigation Bar -->
   <nav class="navbar">
     <div class="logo-container">
       <h1>HealthCare Portal</h1>
     </div>
     <div class="welcome-message">
-      <p>Welcome, Doctor</p>
+      <p>Welcome, {{ user.username }}</p>
     </div>
     <div class="top-buttons">
       <button class="notification-btn">
         <span class="bell-icon">&#128276;</span>
       </button>
+     <form action="{% url 'logout' %}" method="POST">
+    {% csrf_token %}
+    <button class="notification-btn" type="submit">
+        Logout
+    </button>
+</form>
     </div>
   </nav>
 
@@ -49,7 +60,7 @@
             <td>{{patient.patientId}}</td>
             <td>{{patient.JoinedTime}}</td>
             <td>{{patient.description}}</td>
-            <td><a href="#" class="arrow-link"><i class="fas fa-arrow-right"></i></a></td>
+            <td><a href="/doctor/pateint/{{patient.patientId}}" class="arrow-link"><i class="fas fa-arrow-right"></i></a></td>
           </tr>
         {% endfor %}
         </tbody>

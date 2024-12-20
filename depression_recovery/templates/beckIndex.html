@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beck's Depression Inventory</title>
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #e8f4f8, #d1e8f4);
+    color: #2c3e50;
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(145deg, #ffffff, #f0f9ff);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #34495e;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .question {
+    margin-bottom: 30px;
+  }
+  
+  .question h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-weight: 500;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .options button {
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #f7f9fa, #e9f2f8);
+    border: 1px solid #cbd6df;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.4s ease;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .options button:hover {
+    background: linear-gradient(135deg, #eaf3fc, #cce4f7);
+    border-color: #89bde4;
+    transform: scale(1.03);
+  }
+  
+  .options button.selected {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border-color: #00408f;
+    transform: scale(1.05);
+  }
+  
+  .submit-button {
+    display: block;
+    margin: 30px auto;
+    padding: 14px 30px;
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s ease;
+  }
+  
+  .submit-button:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .result {
+    margin-top: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #dff0d8, #c8e6c9);
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #3c763d;
+    font-size: 1.3rem;
+    border: 1px solid #c3e6cb;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Beck's Depression Inventory</h1>
+    <form id="bdi-form">
+      <div class="question" data-question="1">
+        <div class="options">
+          <button type="button" data-score="0">I do not feel sad.</button>
+          <button type="button" data-score="1">I feel sad.</button>
+          <button type="button" data-score="2">I am sad all the time and I can't snap out of it.</button>
+          <button type="button" data-score="3">I am so sad and unhappy that I can't stand it.</button>
+        </div>
+      </div>
+      <div class="question" data-question="2">
+        <div class="options">
+          <button type="button" data-score="0">I am not particularly discouraged about the future.</button>
+          <button type="button" data-score="1">I feel discouraged about the future</button>
+          <button type="button" data-score="2">I feel I have nothing to look forward to.</button>
+          <button type="button" data-score="3">I feel the future is hopeless and that things cannot improve.</button>
+        </div>
+      </div>
+      <div class="question" data-question="3">
+        <div class="options">
+          <button type="button" data-score="0">I do not feel like a failure.</button>
+          <button type="button" data-score="1">I feel I have failed more than the average person.</button>
+          <button type="button" data-score="2">As I look back on my life, all I can see is a lot of failures.</button>
+          <button type="button" data-score="3">I feel I am a complete failure as a person.</button>
+        </div>
+      </div>
+      <div class="question" data-question="4">
+        <div class="options">
+          <button type="button" data-score="0">I get as much satisfaction out of things as I used to.</button>
+          <button type="button" data-score="1">I don't enjoy things the way I used to</button>
+          <button type="button" data-score="2">I don't get real satisfaction out of anything anymore.</button>
+          <button type="button" data-score="3">I am dissatisfied or bored with everything.</button>
+        </div>
+      </div>
+      <div class="question" data-question="5">
+        <div class="options">
+          <button type="button" data-score="0">I don't feel particularly guilty.</button>
+          <button type="button" data-score="1">I feel guilty a good part of the time.</button>
+          <button type="button" data-score="2">I feel quite guilty most of the time.</button>
+          <button type="button" data-score="3">I feel guilty all of the time.</button>
+        </div>
+      </div>
+      <!-- Repeat similar blocks for all 21 questions -->
+
+      <button type="button" class="submit-button" onclick="calculateScore()">Submit</button>
+    </form>
+    <div id="result" class="result" style="display:none;"></div>
+  </div>
+
+  <script>
+
+        function getCsrfToken() {
+        const token = document.querySelector('meta[name="csrf-token"]');
+        console.log(token)
+        return token ? token.content : '';
+}
+
+    const questions = document.querySelectorAll('.question');
+
+    questions.forEach(question => {
+      const buttons = question.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          buttons.forEach(btn => btn.classList.remove('selected'));
+          button.classList.add('selected');
+        });
+      });
+    });
+
+    function calculateScore() {
+      let totalScore = 0;
+      questions.forEach(question => {
+        const selected = question.querySelector('.selected');
+        if (selected) {
+          totalScore += parseInt(selected.getAttribute('data-score'));
+        }
+      });
+      sendBecks(totalScore);
+    }
+
+    function sendBecks(totalScore) {
+      console.log(totalScore);
+      fetch('/api/findbecks/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCsrfToken()
+        },
+        body: JSON.stringify({
+          beckScore: totalScore
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        window.location.href = "/home/patient";
+      })
+      .catch(error => {
+        console.error('Error sending Beck score:', error);
+      });
+    }
+  </script>
+</body>
+</html>

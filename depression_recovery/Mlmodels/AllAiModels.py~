@@ -55,8 +55,8 @@ class Sentimental:
 class VideoModel:
     def __init__(self):
         pwd = os.path.dirname(__file__)
-        self.model = model = tf.saved_model.load(f'{pwd}/model')
-        self.face_cascade = cv2.CascadeClassifier(os.path.join(pwd, 'haarcascade_frontalface_default.xml'))
+        #self.model = model = tf.saved_model.load(f'{pwd}/model')
+        #self.face_cascade = cv2.CascadeClassifier(os.path.join(pwd, 'haarcascade_frontalface_default.xml'))
         self.emotion_labels = ["angry", "fear", "happy", "sad"]  # Adjust based on your model's output
 
     def predict_emotion(self, frame):

@@ -5,30 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e1c1d76-75b2-4d02-9831-6e03103a16b7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/haarcascade_frontalface_default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/model/fingerprint.pb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/model/saved_model.pb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/model/variables/variables.data-00000-of-00001" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/model/variables/variables.index" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/my_5_class701Model.h5" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/migrations/0007_patientdata_description.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/migrations/0008_remove_doctordata_patients.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/static/CSS/doctor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/static/CSS/patient.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/static/CSS/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/static/Photos/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/static/Photos/logo1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/static/Photos/profile.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/templates/doctorHome.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/depression_recovery/templates/pateintHome.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/modelRandom.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/depression_recovery/templates/beckIndex.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/depression_recovery/Mlmodels/sentimental.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/AllAiModels.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/Mlmodels/AllAiModels.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/Mlmodels/AllAiModels.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/depression_recovery/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/serializer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/depression_recovery/static/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/static/CSS/patient.css" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/static/CSS/patient.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/templates/ChatBot.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/ChatBot.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/Mainhome.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/Mainhome.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/templates/doctor.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/doctor.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/doctorHome.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/doctorHome.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/doctor_signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/doctor_signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/pateintHome.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/pateintHome.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/patient_signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/patient_signup.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/templates/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/upload.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/views.py" afterDir="false" />
@@ -53,6 +45,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -74,12 +69,13 @@
     &quot;com.codeium.enabled&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/Ai_Driven_Depression_recovery/depression_recovery/Mlmodels&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/Ai_Driven_Depression_recovery/depression_recovery/templates&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\Ai_Driven_Depression_recovery\depression_recovery\templates" />
       <recent name="F:\Ai_Driven_Depression_recovery\depression_recovery\Mlmodels" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -181,22 +177,27 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/depression_recovery/Mlmodels/AllAiModels.py</url>
-          <line>12</line>
+          <line>13</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/depression_recovery/urls.py</url>
-          <line>17</line>
+          <line>21</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/depression_recovery/views.py</url>
-          <line>321</line>
-          <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/depression_recovery/serializer.py</url>
           <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/depression_recovery/Mlmodels/AllAiModels.py</url>
+          <line>79</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/depression_recovery/urls.py</url>
+          <line>7</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

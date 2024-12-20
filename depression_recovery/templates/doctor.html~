@@ -167,7 +167,7 @@ function drawChartVideoPie() {
         ]);
 
         const options = {
-            title: 'Moods in Day',
+            title: 'Moods vs Time',
             hAxis: {
                 title: 'Time (Hours)',
                 viewWindow: {

@@ -1,9 +1,83 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Doctor Signup</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign Up</button>
-</form>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right,#a8c0ff, #3f2b96);
+        margin-top : 100px;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .signup-container {
+        background-color: white;
+        padding: 20px 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 450px;
+        width: 100%;
+    }
+
+    .signup-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .signup-container form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .signup-container form p {
+        margin-bottom: 10px;
+    }
+
+    .signup-container input,
+    .signup-container select,
+    .signup-container textarea {
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    .signup-container input:focus,
+    .signup-container select:focus,
+    .signup-container textarea:focus {
+        outline: none;
+        border-color: #85D8CE;
+    }
+
+    .signup-container button {
+        background: #85D8CE;
+        color: white;
+        border: none;
+        padding: 12px;
+        margin-top: 15px;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .signup-container button:hover {
+        background: #057378;
+    }
+</style>
+
+<div class="signup-container">
+    <h2>Doctor Signup</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
 {% endblock %}
