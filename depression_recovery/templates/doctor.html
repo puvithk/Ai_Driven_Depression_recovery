@@ -6,7 +6,48 @@
     <meta name="csrf-token" content="{{ csrf_token }}">
 </head>
 <body>
-    <h3>Doctors</h3>
+  <style>
+        #back-Button {
+            background-color: blue;
+            color: white; /* Makes the text color white for better visibility */
+            border: none; /* Removes the border */
+            padding: 10px 20px; /* Adds padding to the button */
+            font-size: 16px; /* Sets font size */
+            border-radius: 5px; /* Adds rounded corners */
+            cursor: pointer; /* Changes the cursor to pointer on hover */
+        }
+
+        #back-Button:hover {
+            background-color: darkblue; /* Changes color when hovered */
+        }
+
+        .nav {
+            display: grid;
+            grid-template-columns: auto auto; /* Defines two rows */
+            gap: 10px; /* Adds space between rows */
+            align-items: center; /* Aligns items vertically */
+            justify-content: center; /* Aligns items horizontally */
+            text-align: center; /* Centers the text */
+            margin: 20px; /* Adds some margin around the container */
+        }
+
+        h3 {
+            margin: 0; /* Removes default margin for h3 */
+            font-family: Arial, sans-serif; /* Sets font family */
+            color: #333; /* Sets text color */
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <h3>Doctors</h3>
+        <div>
+            <button id="back-Button" onclick="backToHome()">
+                Home
+            </button>
+        </div>
+    </div>
+
 <div id="chartContainer">
     <button id="scrollLeft">◀ Scroll Left</button>
     <div id="myChart" style="width: 100vw; height: 100vh;"></div>
@@ -15,6 +56,7 @@
 
 <div id="myVideo" style="max-width:100vw; height:100vh"></div>
 <div id="myPie" style="max-width:100vw; height:100vh"></div>
+<div id="becks"  style="max-width:100vw; height:100vh"></div>
 </body>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
@@ -261,5 +303,8 @@ google.charts.setOnLoadCallback(drawChartVideo);
 }
 
 */
+    function backToHome(){
+    window.location.href = "/home/doctor";
+    }
 </script>
 </html>

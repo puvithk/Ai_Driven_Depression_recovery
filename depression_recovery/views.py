@@ -188,6 +188,8 @@ def chat_bot(request):
         aimodel = global_ai_model
         aimodel.conversation_history = conversation_history
 
+
+
         # Generate AI response and mood analysis
         response = aimodel.chat(user_input, moodByText[ -1 ])
         sentiment = aimodel.sentimental.predict_sentiment(user_input)
@@ -332,7 +334,7 @@ def logoutOut(request):
     logout(request)  # Logs out the user
     return redirect('/login')  # Redirects to the login page
 
-
+@api_view(['POST'])
 def findbecks(request):
     if request.method == 'POST':
         print(request.data)
@@ -341,11 +343,13 @@ def findbecks(request):
             BecksIndex.objects.create(score=becksScore , timestamp = now(), patient=PatientData.objects.get(user=request.user))
         except Exception as e:
             print(e)
-            return redirect('/findbecks')
-        return redirect('/home/Patient')
+            return Response({"status": "error", "message": str(e)})
+        return Response({"status": "success"})
+def findBecksindex(request):
+    return render(request, "beckIndex.html")
 
 
-def beckPages(request):
+
 
 @api_view([ 'POST' ])
 @csrf_exempt
@@ -476,3 +480,4 @@ def getVideoMoodCount(request):
         'sad': dataMood.count('sad')
     }
     return Response({"status": "success", "data": moodCounts})
+

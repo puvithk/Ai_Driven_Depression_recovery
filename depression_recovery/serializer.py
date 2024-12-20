@@ -28,3 +28,5 @@ class WeablesDataSerializer(serializers.ModelSerializer):
         model = WeablesData
         fields = '__all__'
 
+
+
