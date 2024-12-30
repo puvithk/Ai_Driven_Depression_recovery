@@ -29,4 +29,13 @@ class WeablesDataSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'
 
+
+class BecksIndexSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BecksIndex
+        fields = '__all__'

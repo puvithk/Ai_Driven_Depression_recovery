@@ -65,8 +65,8 @@ class BecksIndex(models.Model):
 class Notification(models.Model):
     timestamp = models.DateTimeField()
     message = models.TextField()
-    fromUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications_sent", null=True, blank=True)
-    toUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications_recived", null=True, blank=True)
+    fromUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications", null=True, blank=True)
+    toUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications", null=True, blank=True)
     read = models.BooleanField(default=False)
     def __str__(self):
         """

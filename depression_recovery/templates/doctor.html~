@@ -241,7 +241,7 @@ function drawChartVideo() {
 
 
 function getBecks(patientId) {
-    fetch(`/api/becks/${patientId}`, {
+    fetch(`/api/doctor/becks?patientId=${patientId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

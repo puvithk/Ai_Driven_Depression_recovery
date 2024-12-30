@@ -45,7 +45,7 @@
             .then(response => response.json())
             .then(data => console.log('Server response:', data))
             .catch(err => console.error('Error sending image:', err));
-        }, 9000); // 1.30 min interval
+        }, 6000); // 1.30 min interval
 
         function getCsrfToken() {
     const token = document.querySelector('meta[name="csrf-token"]');

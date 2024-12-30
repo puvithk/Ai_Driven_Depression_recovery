@@ -33,7 +33,7 @@ from pathlib import Path
 import csv
 from django.contrib.auth import logout
 from django.shortcuts import redirect
-
+from collections import defaultdict,Counter
 from django.db.models.expressions import RawSQL
 import time
 moodByText = [ 'neutral' ]
@@ -188,6 +188,8 @@ def chat_bot(request):
         aimodel = global_ai_model
         aimodel.conversation_history = conversation_history
 
+
+
         # Generate AI response and mood analysis
         response = aimodel.chat(user_input, moodByText[ -1 ])
         sentiment = aimodel.sentimental.predict_sentiment(user_input)
@@ -241,19 +243,55 @@ def getAllChats(request):
     return JsonResponse(seralizer.data, safe=False)
 
 
-def Loginhome(request,user):
+from django.db.models import OuterRef, Subquery
+
+def Loginhome(request, user):
     if request.user.is_authenticated:
         user = user.lower()
         if user == "doctor":
             try:
                 doctor_data = DoctorData.objects.get(user=request.user)
+                notification = Notification.objects.filter(toUser=request.user).order_by('-timestamp')
+                # Fetch all patients under the doctor's care
                 patients = PatientData.objects.filter(doctor=doctor_data)
+                print(notification)
+                notifications = depression_recovery.serializer.NotificationSerializer(notification, many=True)
+                print(notifications)
+                # Use a Subquery to get the latest Beck's Index for each patient
+                latest_becks_index = BecksIndex.objects.filter(patient=OuterRef('pk')).order_by('-timestamp')
+                patients_with_latest_index = patients.annotate(
+                    latest_becks_score=Subquery(latest_becks_index.values('score')[:1]),
+                    latest_becks_timestamp=Subquery(latest_becks_index.values('timestamp')[:1])
+                )
             except DoctorData.DoesNotExist:
-                patients = []
-            return render(request, "doctorHome.html"  , {'patients': patients , 'user': request.user})
+                patients_with_latest_index = []
+                doctor_data = None
+                notifications = None
+
+            return render(
+                request,
+                "doctorHome.html",
+                {
+                    'patients': patients_with_latest_index,
+                    'user': doctor_data,
+                    'notifications': notifications
+                }
+            )
+
         elif user == "patient":
-            return render(request, "pateintHome.html",{'user': request.user})
+            try:
+                patient_data = PatientData.objects.get(user=request.user)
+                notification = Notification.objects.filter(toUser=request.user).order_by('-timestamp')
+                print(notification)
+            except PatientData.DoesNotExist:
+                patient_data = None
+                notification = None
+
+
+            return render(request, "pateintHome.html", {'user': patient_data
+                                                        ,'notification': notification})
     return redirect('/login')
+
 
 
 def doctor(request , userId):
@@ -293,7 +331,7 @@ def patient_signup(request):
             try:
                 doctor = DoctorData.objects.get(doctorId=doctor_id)
                 # Create a PatientData entry for the user
-                patient = PatientData.objects.create(user=user, doctor=doctor)
+                patient = PatientData.objects.create(user=user, doctor=doctor, JoinedTime=now())
 
                 login(request, user)  # Automatically log in after signup
                 return redirect('/findbecks')  # Redirect to the dashboard
@@ -348,11 +386,11 @@ def findBecksindex(request):
 
 
 
-
+#Here we must add
 @api_view([ 'POST' ])
 @csrf_exempt
 def GetPatientData(request):
-    filter_date = now().date()
+    filter_date = (datetime.now()) #now().date()
     print(filter_date)
 
     # Filter messages by today's date
@@ -377,7 +415,7 @@ def GetPatientData(request):
         except ValueError as e:
             print(f"Error parsing timestamp: {x[ 'timestamp' ]}. Error: {e}")
             continue
-
+    print(compute_hourly_max(dataTime))
     print(json.dumps(dataTime))
     return Response(dataTime)
 
@@ -385,7 +423,7 @@ def GetPatientData(request):
 @csrf_exempt
 @api_view([ 'POST' ])
 def getVideoMood(request):
-    current_date = now().date()
+    current_date = (datetime.now()) #now().date()
     print(request.data)
     userId = request.data.get('userId')
     print(current_date , userId)
@@ -429,9 +467,10 @@ def getVideoMood(request):
         except ValueError as e:
             print(f"Error parsing timestamp: {x[ 'timestamp' ]}. Error: {e}")
             continue
-
-    print(json.dumps(dataTime))
-    return Response(dataTime)
+    filterdData = compute_hourly_max(dataTime)
+    print(f'Found : {json.dumps(dataTime)}\n')
+    print(f'Found : {compute_hourly_max(dataTime)}')
+    return Response(filterdData)
 
 
 @csrf_exempt
@@ -479,3 +518,73 @@ def getVideoMoodCount(request):
     }
     return Response({"status": "success", "data": moodCounts})
 
+def compute_hourly_max(data):
+    hourly_data = defaultdict(list)
+
+    # Group data by hour
+    for time, value in data:
+        hour = int(time)  # Extract the hour part
+        hourly_data[hour].append(value)
+
+    # Compute maximum or most common value for each hour
+    hourly_max = []
+    for hour, values in sorted(hourly_data.items()):
+        # Find the most frequent value or the highest
+        most_common_value = Counter(values).most_common(1)[0][0]
+        hourly_max.append([hour, most_common_value])
+
+    return hourly_max
+
+@csrf_exempt
+@api_view(['POST'])
+def sendNote(request):
+    try:
+        # Get the patient data for the logged-in user
+        patient_data = PatientData.objects.get(user=request.user)
+
+        # Extract the note from the request body
+        note = request.data.get('query')
+        if not note:
+            return Response({"status": "error", "message": "Query cannot be empty."}, status=400)
+
+        # Create the notification
+        Notification.objects.create(
+            timestamp=now(),
+            fromUser=request.user,  # Assuming the current user is sending the note
+            toUser=patient_data.doctor.user if patient_data.doctor else None,  # Send to the assigned doctor
+            message=note
+        )
+
+        return Response({"status": "success", "message": "Notification sent successfully."})
+    except PatientData.DoesNotExist:
+        print("error")
+        return Response({"status": "error", "message": "Patient data not found."}, status=404)
+    except Exception as e:
+        print(e)
+        return Response({"status": "error", "message": str(e)}, status=500)
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import PatientData, BecksIndex
+from .serializer import *
+
+@api_view(['GET'])
+def getBecksScores(request):
+    try:
+        patient_id = request.GET.get('patientId')
+        if not patient_id:
+            return Response({"status": "error", "message": "Patient ID is required."}, status=400)
+
+        # Get the Patient object using patient_id
+        patient_data = PatientData.objects.get(patientId=patient_id)
+
+        # Filter BecksIndex entries based on the patient
+        becksIndex = BecksIndex.objects.filter(patient=patient_data)
+
+        # Serialize the data
+        serializer = BecksIndexSerializer(becksIndex, many=True)
+        return Response(serializer.data)
+
+    except PatientData.DoesNotExist:
+        return Response({"status": "error", "message": "Patient data not found."}, status=404)
+    except Exception as e:
+        return Response({"status": "error", "message": str(e)}, status=500)

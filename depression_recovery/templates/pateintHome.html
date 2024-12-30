@@ -6,75 +6,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Medical Dashboard</title>
   {% block loading %}
-
-   {% load static %}
+  {% load static %}
+  <meta name="csrf-token" content="{{ csrf_token }}">
   <link rel="stylesheet" href="{% static 'CSS/patient.css' %}">
-  <!-- Font Awesome Icons for UI -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    {% load static %}
   <script src="{% static 'JS/contact_d.js' %}"></script>
-   {% endblock loading %}
+  {% endblock loading %}
 </head>
 <body>
+<style>
 
-
-{% block content %}
-
+</style>
+  {% block content %}
   <!-- Navigation Bar -->
-  <nav class="navbar">
+  <nav class="navbar" style="position:fixed">
     <div class="logo-container">
       <div class="logo">
-        {% load static %}
         <img src="{% static 'Photos/logo.png' %}" alt="Logo" class="logo-img">
         <h1>HealthCare Portal</h1>
       </div>
     </div>
     <ul class="nav-links">
       <li><a href="#Home">Home</a></li>
-      <li><a href="#About us">About us</a></li>
+      <li><a href="#About">About us</a></li>
       <li><a href="#Contact">Contact</a></li>
     </ul>
     <div class="top-buttons">
+      <!-- Notification Button -->
       <div class="notification-container">
         <button class="notification-btn">
           <span class="bell-icon">&#128276;</span>
         </button>
         <div class="dropdown" id="dropdown">
-          <tr>
+          {% if notifications|length == 0 %}
             <p>No new notifications</p>
-            <p>No new notifications</p>
-          </tr>
+          {% else %}
+            {% for notification in notifications %}
+              <p>{{ notification.message }}</p>
+            {% endfor %}
+          {% endif %}
         </div>
       </div>
-      
+
+      <!-- Logout Button -->
       <div class="notification-container">
         <form action="{% url 'logout' %}" method="POST">
-    {% csrf_token %}
-    <button class="notification-btn" type="submit">
-        Logout
-    </button>
-</form>
-
-
+          {% csrf_token %}
+          <button class="notification-btn" type="submit">Logout</button>
+        </form>
       </div>
-
-
-    
     </div>
   </nav>
 
   <!-- Welcome Message -->
   <header>
     <div class="welcome-message">
-      <br>
-      <h2>Welcome, User!</h2>
+      <h2>Welcome, {{ user.username }}!</h2>
     </div>
   </header>
 
   <!-- Main Content Section -->
   <main>
     <div class="action-container">
-      <!-- Consultant Section -->
+      <!-- Doctor Consultation -->
       <div id="consult" class="action-box consult">
         <i class="fas fa-user-md"></i>
         <h2>Doctor Consultation</h2>
@@ -82,36 +76,26 @@
         <button onclick="openPopup()">Consult Now</button>
       </div>
 
-      <!-- Popup Container -->
-      <div class="popup-container" id="popupContainer">
+      <!-- Consultation Popup -->
+      <div class="popup-container" id="popupContainer" style="display: none;">
         <div class="popup-box">
-            <span class="close-btn" onclick="closePopup()">&times;</span>
-            <h3>Book Appointment</h3>
-            
-            <form>
-                <label for="name">Enter your name</label>
-                <input type="text" id="name" placeholder="Enter your name" required>
-                
-                <label for="phone">Enter your mobile number</label>
-                <input type="tel" id="phone" placeholder="+91 Enter your mobile number" required>
-                
-
-      
-                <label for="appointment-date">Select Appointment Date</label>
-                <input type="date" id="appointment-date" required>
-      
-                <label for="appointment-time">Select Appointment Time</label>
-                <input type="time" id="appointment-time" required>
-                
-                <button type="submit">Book Appointment</button>
-            </form>
+          <span class="close-btn" onclick="closePopup()">&times;</span>
+          <h3>Book Appointment</h3>
+          <form>
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Enter your name" required>
+            <label for="phone">Mobile Number</label>
+            <input type="tel" id="phone" placeholder="+91 Enter your mobile number" required>
+            <label for="appointment-date">Appointment Date</label>
+            <input type="date" id="appointment-date" required>
+            <label for="appointment-time">Appointment Time</label>
+            <input type="time" id="appointment-time" required>
+            <button type="submit">Book Appointment</button>
+          </form>
         </div>
       </div>
-    
-    
-      
 
-      <!-- Top Row with two action boxes -->
+      <!-- Chatbot -->
       <div class="top-row">
         <div id="chatbot" class="action-box chatbot">
           <i class="fas fa-comment-dots"></i>
@@ -120,44 +104,82 @@
           <button onclick="window.location.href='/chatBot';">Start Chat</button>
         </div>
 
-        
+        <!-- Doctor Query -->
         <div id="query" class="action-box query">
           <i class="fas fa-stethoscope"></i>
           <h2>Doctor Query</h2>
           <p>Ask a question to a doctor</p>
           <button onclick="openPop()">Ask Now</button>
-        </div>  
-        <!-- Popup Container -->
+        </div>
+      </div>
+
+      <!-- Doctor Query Popup -->
       <div class="popup-query" id="popupquery" style="display: none;">
         <div class="popup-box">
-            <span class="close-btn" onclick="closePop()">&times;</span>
-            <h1>Ask a Doctor Online</h1>
-            
-            <form>
-              <label for="query">Enter Your Health Query </label>
-              <textarea id="query" placeholder="Describe your health query here" required></textarea>          
-                
-                <button type="submit">Submit</button>
-            </form>
+          <span class="close-btn" onclick="closePop()">&times;</span>
+          <h3>Ask a Doctor Online</h3>
+          <form onsubmit="sendQuery(event)">
+            <label for="queryText">Health Query</label>
+            <textarea id="queryText" placeholder="Describe your health query here" required></textarea>
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <button type="submit">Submit</button>
+          </form>
         </div>
-    </div>
-
-      </div>  
+      </div>
     </div>
   </main>
- 
 
-  <!-- Footer Section -->
-  <footer>
+  <!-- Footer -->
+  <footer style="position:fixed; bottom: 0;">
     <p>&copy; 2024 HealthCare Portal. All Rights Reserved.</p>
-    <div class="social-media">
+    <div class="social-media" >
       <a href="https://www.facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
       <a href="https://www.twitter.com" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
       <a href="https://www.instagram.com" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
     </div>
   </footer>
 
-  <script src="script.js"></script>
-{% endblock content %}
+  <!-- Scripts -->
+  <script>
+    function openPopup() {
+      document.getElementById('popupContainer').style.display = 'block';
+    }
+
+    function closePopup() {
+      document.getElementById('popupContainer').style.display = 'none';
+    }
+
+    function openPop() {
+      document.getElementById('popupquery').style.display = 'block';
+    }
+
+    function closePop() {
+      document.getElementById('popupquery').style.display = 'none';
+    }
+
+    function sendQuery(event) {
+      event.preventDefault(); // Prevent default form submission
+      const queryText = document.getElementById('queryText').value;
+
+      fetch('/api/doctor/sendnote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content,
+        },
+        body: JSON.stringify({ query: queryText }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Query submitted successfully!');
+        closePop();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while submitting your query.');
+      });
+    }
+  </script>
+  {% endblock content %}
 </body>
 </html>

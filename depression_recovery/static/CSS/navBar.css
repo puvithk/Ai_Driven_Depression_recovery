@@ -1,0 +1,203 @@
+.navbar {
+    width: 100%;
+    background-color: #0277bd; /* Professional blue */
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar .logo-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .navbar h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0 15px;
+  }
+
+  .nav-links li {
+    margin-right: 20px;
+  }
+
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover {
+    color: #ffb74d; /* Highlight color */
+  }
+  .top-buttons {
+    display: flex;
+    align-items: center;
+  }
+
+  .notification-btn, .profile-btn {
+    background-color: #0277bd;
+    border: none;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: white;
+    font-size: 24px;
+    transition: transform 0.3s ease;
+    margin-left: 15px;
+  }
+
+  .notification-btn:hover, .profile-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .profile-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+
+ /* Popup container styles */
+ .popup-container {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+ /* Popup query */
+ .popup-query {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Popup box styles */
+.popup-box {
+  background: #fff;
+  width: 400px;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Close button styles */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Button styles */
+button {
+  background-color: #0277bd;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0277bd;
+}
+
+/* Input and select styles */
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+label {
+  font-weight: bold;
+}
+
+
+textarea {
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.notification-container {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 4px;
+  width: 200px;
+  z-index: 1;
+}
+
+.dropdown p {
+  margin: 0;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+}
+
+.dropdown p:last-child {
+  border-bottom: none;
+}
+
+.notification-btn:focus + .dropdown,
+.notification-btn:hover + .dropdown {
+  display: block;
+}

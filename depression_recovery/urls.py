@@ -18,6 +18,7 @@ urlpatterns = [
     path("api/doctor", views.GetPatientData, name="doctor"),
     path("api/doctor/video", views.getVideoMood , name="videoMood"),
     path("api/doctor/counts" , views.getVideoMoodCount , name="videoMoodCount"),
-
+    path('api/doctor/sendnote', views.sendNote , name="sendNote"),
+    path('api/becks/<str:patient_id>', views.getBecksScores , name="getBecksScores"),
 
 ]
