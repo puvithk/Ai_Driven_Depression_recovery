@@ -246,9 +246,13 @@ def getAllChats(request):
 from django.db.models import OuterRef, Subquery
 
 def Loginhome(request, user):
+
     if request.user.is_authenticated:
         user = user.lower()
         if user == "doctor":
+            if request.method == "POST":
+                userId = request.POST.get("userId")
+
             try:
                 doctor_data = DoctorData.objects.get(user=request.user)
                 notification = Notification.objects.filter(toUser=request.user).order_by('-timestamp')
@@ -274,7 +278,7 @@ def Loginhome(request, user):
                 {
                     'patients': patients_with_latest_index,
                     'user': doctor_data,
-                    'notifications': notifications
+                    'notifications': notifications.data
                 }
             )
 
@@ -376,7 +380,10 @@ def findbecks(request):
         print(request.data)
         becksScore = request.data.get('beckScore')
         try:
-            BecksIndex.objects.create(score=becksScore , timestamp = now(), patient=PatientData.objects.get(user=request.user))
+            patient = PatientData.objects.get(user=request.user)
+            BecksIndex.objects.create(score=becksScore , timestamp = now(), patient=patient)
+            patient.BeckTest= False
+            patient.save()
         except Exception as e:
             print(e)
             return Response({"status": "error", "message": str(e)})
@@ -568,12 +575,12 @@ from .models import PatientData, BecksIndex
 from .serializer import *
 
 @api_view(['GET'])
-def getBecksScores(request):
+def getBecksScores(request , patient_id):
     try:
-        patient_id = request.GET.get('patientId')
+
         if not patient_id:
             return Response({"status": "error", "message": "Patient ID is required."}, status=400)
-
+        print(f'found :{patient_id}')
         # Get the Patient object using patient_id
         patient_data = PatientData.objects.get(patientId=patient_id)
 
@@ -589,3 +596,20 @@ def getBecksScores(request):
         return Response({"status": "error", "message": "Patient data not found."}, status=404)
     except Exception as e:
         return Response({"status": "error", "message": str(e)}, status=500)
+@csrf_exempt
+@api_view(['POST'])
+def changeBeckTest(request):
+    if request.method == 'POST':
+        print(request.data.get('patientId'))
+        patientId =  request.data.get('patientId')
+        try:
+            patient = PatientData.objects.get(patientId=patientId)
+            print(patient.BeckTest)
+            patient.BeckTest = True
+            patient.save()
+            return Response({"status": "success"})
+        except PatientData.DoesNotExist:
+            return Response({"status": "error", "message": "Patient data not found."}, status=404)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=500)
+    return None

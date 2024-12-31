@@ -12,7 +12,7 @@ urlpatterns = [
     path('logout/', views.logoutOut, name='logout'),
     path('home/<str:user>', views.Loginhome, name='Login-home'),
     path("chatBot", views.chatBot, name="chatBot"),
-    path("doctor/pateint/<str:userId>", views.doctor, name="doctor"),
+    path("doctor/patient/<str:userId>", views.doctor, name="doctor"),
     path("api/upload", views.upload_image, name="home"),
     path("api/chatBot", views.chat_bot, name="chat_Bot"),
     path("api/doctor", views.GetPatientData, name="doctor"),
@@ -20,5 +20,5 @@ urlpatterns = [
     path("api/doctor/counts" , views.getVideoMoodCount , name="videoMoodCount"),
     path('api/doctor/sendnote', views.sendNote , name="sendNote"),
     path('api/becks/<str:patient_id>', views.getBecksScores , name="getBecksScores"),
-
+    path('api/changeBeckTest/', views.changeBeckTest , name="changeBeckTest")
 ]

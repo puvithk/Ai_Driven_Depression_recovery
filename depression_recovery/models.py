@@ -18,6 +18,7 @@ class PatientData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     doctor = models.ForeignKey(DoctorData, on_delete=models.CASCADE, related_name='patients_under_care', blank=True,null=True)
     description = models.TextField(null=True, blank=True)  # Add a d   escription field for patient group
+    BeckTest = models.BooleanField(default=False)
     def __str__(self):
         return f"Patient: {self.user.username}"
 

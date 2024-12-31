@@ -9,47 +9,65 @@
 
   <meta name="csrf-token" content="{{ csrf_token }}">
 
-  <!-- Font Awesome Icons for UI -->
+  <!-- Font Awesome Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
   <style>
-
-    body{
-     background: linear-gradient(to right,#a8c0ff, #3f2b96)
+    body {
+      background: linear-gradient(to right, #a8c0ff, #3f2b96);
     }
 
-.dropdown {
-  display: none;
-  position: absolute;
-  right: 0;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  border-radius: 4px;
-  width: 200px;
-  z-index: 1;
-}
+    .dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      border-radius: 4px;
+      width: 200px;
+      z-index: 1;
+    }
 
-.dropdown p {
-  margin: 0;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  font-size: 14px;
-  color: #333;
-}
+    .dropdown p {
+      margin: 0;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+      color: #333;
+    }
 
-.dropdown p:last-child {
-  border-bottom: none;
-}
+    .dropdown p:last-child {
+      border-bottom: none;
+    }
 
-.notification-btn:focus + .dropdown,
-.notification-btn:hover + .dropdown {
-  top:80px;
-  display: block;
-}
+    .notification-btn:focus + .dropdown,
+    .notification-btn:hover + .dropdown {
+      top: 80px;
+      display: block;
+    }
 
+    button {
+      cursor: pointer;
+    }
+
+    .beck-test-button {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: none;
+    }
+
+    .green {
+      background-color: green;
+    }
+
+    .red {
+      background-color: red;
+    }
   </style>
+
   <!-- Navigation Bar -->
   <nav class="navbar">
     <div class="logo-container">
@@ -63,24 +81,17 @@
         <span class="bell-icon">&#128276;</span>
       </button>
       <div class="dropdown" id="dropdown">
-          <tr>
-  {% if notifications|length == 0 %}
-    <p>No new notifications </p>
-  {% else %}
-    {% for notification in notifications %}
-      <p>{{ notification.message }}</p>
-    {% endfor %}
-  {% endif %}
-</tr>
+{% for notification in notifications %}
+  <p style="color: {% if notification.seen %} red {% else %} green {% endif %};">
+    {{ notification.message }} <span style="color: black;">from patient no : {{ notification.fromUser }}<span/>
+  </p>
+{% endfor %}
+      </div>
 
-        </div>
-
-     <form action="{% url 'logout' %}" method="POST">
-    {% csrf_token %}
-    <button class="notification-btn" type="submit">
-        Logout
-    </button>
-</form>
+      <form action="{% url 'logout' %}" method="POST">
+        {% csrf_token %}
+        <button class="notification-btn" type="submit">Logout</button>
+      </form>
     </div>
   </nav>
 
@@ -96,25 +107,32 @@
             <th>Date</th>
             <th>Beck's Index</th>
             <th>Patient Details</th>
+            <th>Give Beck's Test</th>
           </tr>
         </thead>
         <tbody>
-        {% for patient in patients %}
-
-          <tr>
-            <td>{{patient.user.username}}</td>
-            <td>{{patient.patientId}}</td>
-            <td>{{patient.JoinedTime}}</td>
-            <td>
+          {% for patient in patients %}
+            <tr>
+              <td>{{ patient.user.username }}</td>
+              <td>{{ patient.patientId }}</td>
+              <td>{{ patient.JoinedTime }}</td>
+              <td>
                 {% if patient.latest_becks_score %}
-                    {{ patient.latest_becks_score }}
+                  {{ patient.latest_becks_score }}
                 {% else %}
-                    No Beck's Index Available
+                  No Beck's Index Available
                 {% endif %}
-            </td>
-            <td><a href="/doctor/pateint/{{patient.patientId}}" class="arrow-link"><i class="fas fa-arrow-right"></i></a></td>
-          </tr>
-        {% endfor %}
+              </td>
+              <td><a href="/doctor/patient/{{ patient.patientId }}" class="arrow-link"><i class="fas fa-arrow-right"></i></a></td>
+              <td>
+                <button
+                  class="beck-test-button {% if patient.BeckTest %}red {% else %}green{% endif %}"
+                  title="Click to toggle Beck's Test"
+                  onClick="sendBeckTestRequest('{{ patient.patientId }}')">
+                </button>
+              </td>
+            </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
@@ -130,7 +148,33 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+  function sendBeckTestRequest(patientId) {
+    fetch("/api/changeBeckTest/", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrfToken()
+        },
+        body: JSON.stringify({ patientId: patientId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        if (data.status === "success") {
+            alert("Beck Test updated successfully!");
+        } else {
+            alert(`Error: ${data.message}`);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
 
+
+    function getCsrfToken() {
+      const token = document.querySelector('meta[name="csrf-token"]');
+      return token ? token.content : '';
+    }
+  </script>
 </body>
 </html>

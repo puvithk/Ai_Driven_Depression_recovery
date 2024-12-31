@@ -8,6 +8,7 @@
   {% bootstrap_javascript %}
 
     <meta name="csrf-token" content="{{ csrf_token }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
    {% load static %}
   <link rel="stylesheet" href="{% static 'CSS/navBar.css' %}">
@@ -47,6 +48,9 @@
             font-family: Arial, sans-serif; /* Sets font family */
             color: #333; /* Sets text color */
         }
+      .beck{
+
+      }
     </style>
 </head>
 <body>
@@ -92,6 +96,14 @@
 
     </div>
   </nav>
+<div class="beck-container">
+    <h2>Beck's Depression Inventory</h2>
+    <div id="beck" style="display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+       width: 100vw;"></div>
+</div>
 
   <!-- Welcome Message -->
 <div id="chartContainer">
@@ -100,9 +112,9 @@
     <button id="scrollRight">Scroll Right ▶</button>
 </div>
 
-<div id="myVideo" style="max-width:100vw; height:100vh"></div>
-<div id="myPie" style="max-width:100vw; height:100vh"></div>
-<div id="becks"  style="max-width:100vw; height:100vh"></div>
+<div id="myVideo" style="max-width:100vw; height:100vh ;margin-top: 20px"></div>
+<div id="myPie" style="max-width:100vw; height:100vh ;margin-top: 20px"></div>
+<div id="becks"  style="max-width:100vw; height:100vh;margin-top: 20px"></div>
 </body>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
@@ -138,8 +150,8 @@ function drawChart(data) {
             gridlines: { count: 3 }
         },
        legend: {
-    position: 'left',
-    alignment: 'start',
+   position: 'bottom', // Ensures the legend is displayed at the bottom
+            alignment: 'center',
     labeledValues: [
       {value: 1, label: 'Happy'},
       {value: 0.5, label: 'Neutral'},
@@ -212,6 +224,11 @@ function drawChartVideo() {
     .then(response => response.json())
     .then(data => {
     console.log(data)
+    if (!data) {
+        console.log("No data found ")
+        document.getElementById('myPie').value = 'No data found '
+        return
+    }
         const dataToChart = data.map(item => [ item[0],item[1]]);
         const dataChart = google.visualization.arrayToDataTable([
             ['Time', 'Sentiment'],
@@ -239,9 +256,8 @@ function drawChartVideo() {
     });
 }
 
-
-function getBecks(patientId) {
-    fetch(`/api/becks/${patientId}`, {
+function getBecks() {
+    fetch(`/api/becks/{{userId}}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -255,13 +271,13 @@ function getBecks(patientId) {
     })
     .then(data => {
         console.log(data); // Handle the returned data here
+        renderPieCharts(data);
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
     });
 }
 
-getBecks({{userId}});
 function drawChartVideoPie() {
     fetch('/api/doctor/counts', {
         method: 'POST',
@@ -312,7 +328,9 @@ function getCsrfToken(){
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 google.charts.setOnLoadCallback(drawChartVideo);
+
     google.charts.setOnLoadCallback(drawChartVideoPie);
+
     /*function drawChart() {
     fetch('/api/doctor', {
         method: 'POST',
@@ -382,5 +400,54 @@ google.charts.setOnLoadCallback(drawChartVideo);
     function backToHome(){
     window.location.href = "/home/doctor";
     }
+    function renderPieCharts(scores) {
+    // Assuming getBecks() fetches the scores (mocked here for demonstration)
+
+    console.log(scores)
+    const container = document.getElementById('beck');
+    container.innerHTML = ''; // Clear previous content
+
+    // Iterate through the scores and create charts
+    scores.forEach((entry, index) => {
+        // Create a div for each chart
+        const chartDiv = document.createElement('div');
+        chartDiv.id = `pie-chart-${index}`;
+        chartDiv.style.width = '400px';
+        chartDiv.style.height = '400px';
+        container.appendChild(chartDiv);
+
+        // Draw the chart using Google Charts
+        google.charts.setOnLoadCallback(() => {
+            drawPieChart(entry, chartDiv.id, index + 1);
+        });
+    });
+}
+
+function drawPieChart(entry, chartDivId, index) {
+    const remainingScore = 84 - entry.score;
+
+    const data = google.visualization.arrayToDataTable([
+        ['Label', 'Value'],
+        ['Score', entry.score],
+        ['Remaining', remainingScore]
+    ]);
+
+    const options = {
+        title: `Beck's Score for Entry ${index}`,
+        pieHole: 0.4,
+        colors: ['#4CAF50', '#FFC107']
+    };
+
+    const chart = new google.visualization.PieChart(document.getElementById(chartDivId));
+    chart.draw(data, options);
+}
+
+// Load the Google Charts library
+google.charts.load('current', { packages: ['corechart'] });
+scores= getBecks();
+// Call renderPieCharts to draw all charts
+renderPieCharts(scores);
+
+
 </script>
 </html>

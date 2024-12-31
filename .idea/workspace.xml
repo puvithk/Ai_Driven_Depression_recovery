@@ -5,17 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e1c1d76-75b2-4d02-9831-6e03103a16b7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/depression_recovery/static/CSS/navBar.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/depression_recovery/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/depression_recovery/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/serializer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/depression_recovery/static/CSS/patient.css" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/static/CSS/patient.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/templates/doctor.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/doctor.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/templates/doctorHome.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/doctorHome.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/templates/pateintHome.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/pateintHome.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/depression_recovery/templates/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/templates/upload.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/depression_recovery/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/depression_recovery/views.py" afterDir="false" />
     </list>
@@ -162,6 +157,17 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
@@ -194,8 +200,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/depression_recovery/models.py</url>
-          <line>67</line>
+          <line>68</line>
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/depression_recovery/urls.py</url>
+          <line>16</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/depression_recovery/views.py</url>
+          <line>247</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
